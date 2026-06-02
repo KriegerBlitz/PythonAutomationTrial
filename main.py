@@ -1,7 +1,7 @@
 import os
 import shutil
 import zipfile
-import pandas as pd
+import csv
 
 stack = []
 
@@ -22,17 +22,18 @@ while stack:
             elif sub.is_file():
                 if not isOCT or (sub.name == "016.png"):
 
-                    if not os.path.exists(os.path.join('result', sub.name)): #Looking back probably should have made this a function
+                    if not sub.name in log: #Looking back probably should have made this a function
                         shutil.copy2(sub.path, os.path.join('result', sub.name))
-                        log[sub.name] = {'new name':sub.name, 'path':sub.path, 'old name':sub.name}
+                        log[sub.name] = {'new name':sub.name, 'path':sub.path, 'old name':sub.name, 'kill':False}
                     else:
                         rename = str(os.path.abspath(sub.path).replace(os.path.sep, '_'))
                         shutil.copy2(sub.path, os.path.join('result', rename)) #Why is this yellow
-                        log[rename] = {'new name': rename, 'path': sub.path, 'old name': sub.name} #Wait, I gotta rename the old one too?
-                        dic = log.pop(sub.name)
-                        rename = str(os.path.abspath(dic['path']).replace(os.path.sep, '_'))
-                        os.rename(os.path.join('result', sub.name), os.path.join('result', rename))
-                        log[rename] = {'new name': rename, 'path': dic['path'], 'old name': sub.name}
+                        log[rename] = {'new name': rename, 'path': sub.path, 'old name': sub.name, 'kill':False}
+                        log[sub.name]['kill'] = True
+                        # dic = log.pop(sub.name)
+                        # rename = str(os.path.abspath(dic['path']).replace(os.path.sep, '_'))
+                        # os.rename(os.path.join('result', sub.name), os.path.join('result', rename))
+                        # log[rename] = {'new name': rename, 'path': dic['path'], 'old name': sub.name}
 
                 elif isOCT:
                     continue
