@@ -42,12 +42,14 @@ while stack:
                         elif checkimg(fun.name):
                             copy(fun)
 
-            elif sub.is_file() and checkimg(sub.name):
-                if not isOCT or (sub.name == "016.png"):
+            elif sub.is_file():
+                if not isOCT and checkimg(sub.name) or (sub.name == "016.png"):
                     copy(sub)
 
                 elif isOCT:
-                    continue
+                    name, ext = os.path.splitext(sub.name)
+
+
 
 
     except PermissionError:
