@@ -18,22 +18,18 @@ def copy(sub: os.DirEntry):
         print("Created:", log[sub.name])
     else:
         rename = str(os.path.abspath(sub.path).replace(os.path.sep, '_'))
-        shutil.copy2(sub.path, os.path.join('result', rename))  # Why is this yellow
+        shutil.copy2(sub.path, os.path.join('result', rename))
         log[rename] = {'new name': rename, 'path': sub.path, 'old name': sub.name, 'kill': False}
         log[sub.name]['kill'] = True
         print("Killed:", log[sub.name])
         print("Created:", log[rename])
-        # dic = log.pop(sub.name)
-        # rename = str(os.path.abspath(dic['path']).replace(os.path.sep, '_'))
-        # os.rename(os.path.join('result', sub.name), os.path.join('result', rename))
-        # log[rename] = {'new name': rename, 'path': dic['path'], 'old name': sub.name}
 
 def checkimg(name:str):
     return name.endswith(('.png', '.jpg', '.jpeg','.tif','.tiff','.webp','.arw','.bmp'))
 
 stack.append((loc, False))
 
-while stack:
+while stack: #Depth first search
     loc, isOCT = stack.pop()
     try:
         for sub in os.scandir(loc):
