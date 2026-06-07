@@ -21,7 +21,7 @@ def copy(sub: os.DirEntry):
         shutil.copy2(sub.path, os.path.join('result', rename))  # Why is this yellow
         log[rename] = {'new name': rename, 'path': sub.path, 'old name': sub.name, 'kill': False}
         log[sub.name]['kill'] = True
-        print("Sentenced:", log[sub.name])
+        print("Killed:", log[sub.name])
         print("Created:", log[rename])
         # dic = log.pop(sub.name)
         # rename = str(os.path.abspath(dic['path']).replace(os.path.sep, '_'))
@@ -29,7 +29,7 @@ def copy(sub: os.DirEntry):
         # log[rename] = {'new name': rename, 'path': dic['path'], 'old name': sub.name}
 
 def checkimg(name:str):
-    return name.endswith(('.png', '.jpg', '.jpeg','.tif','tiff','.webp','.arw','.bmp'))
+    return name.endswith(('.png', '.jpg', '.jpeg','.tif','.tiff','.webp','.arw','.bmp'))
 
 stack.append((loc, False))
 
@@ -62,7 +62,7 @@ while stack:
 for k in list(log):
     if log[k]['kill']:
         rename = str(os.path.abspath(log[k]['path']).replace(os.path.sep, '_'))
-        shutil.copy2(log[k]['path'], os.path.join('result', rename))
+        os.rename(os.path.join('result', k), os.path.join('result', rename))
         log[rename] = {'new name': rename, 'path': log[k]['path'], 'old name' : log[k]['old name'], 'kill': False}
         log.pop(k)
         print("Executed:", k)
