@@ -33,7 +33,7 @@ while stack:
     loc, isOCT = stack.pop()
     try:
         for sub in os.scandir(loc):
-            if sub.is_dir(): #Probably shouldn't have called the path var dir
+            if sub.is_dir():
                 if sub.name!= 'FUNDUS': stack.append((sub.path, isOCT or sub.name == "OCT"))
                 else:
                     for fun in os.scandir(sub.path):
@@ -48,8 +48,10 @@ while stack:
 
                 elif isOCT:
                     name, ext = os.path.splitext(sub.name)
-
-
+                    if ext == '.zip':
+                        with zipfile.ZipFile(sub.path) as zip_ref:
+                            zip_ref.extractall(os.path.join(sub.path, '(1)'))
+                        stack.append((os.path.join(sub.path, '(1)'), True))
 
 
     except PermissionError:
